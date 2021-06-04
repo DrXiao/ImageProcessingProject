@@ -4,3 +4,5 @@
 2. ?
 3. ?
 4. ?
+## Installing related packages
+* ```$ pip install -r requirements.txt```
