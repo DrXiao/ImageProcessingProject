@@ -1,6 +1,14 @@
 import cv2
 
-
+"""
+Utility : 
+        讀取影片
+Input :
+        None
+Output:
+        播放海豹ㄉ影片
+        暫時沒有聲音
+"""
 def readViedo():
     video = cv2.VideoCapture('movie/seal.mp4')
 
@@ -19,7 +27,6 @@ def readViedo():
 
 
 def main():
-    print("hello world")
     readViedo()
 
 
