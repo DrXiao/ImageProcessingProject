@@ -27,9 +27,9 @@ def readViedo():
             break
         frame = cv2.flip(frame, 1)
         out.write(frame)
+        audio_frame, val = player.get_frame()
         cv2.imshow('frame', frame)
         cv2.waitKey(1000//fps)
-        audio_frame, val = player.get_frame()
     video.release()
     out.release()
     cv2.destroyAllWindows()
