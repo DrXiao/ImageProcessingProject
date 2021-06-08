@@ -15,7 +15,6 @@ Output:
 
 
 def readVideo(filename='movie/output.mp4'):
-    print(cv2.CAP_FFMPEG)
     video = cv2.VideoCapture(video_path)
     player = MediaPlayer(video_path)
     fps = video.get(cv2.CAP_PROP_FPS)
@@ -24,7 +23,6 @@ def readVideo(filename='movie/output.mp4'):
     height = int(video.get(cv2.CAP_PROP_FRAME_HEIGHT))
     out = cv2.VideoWriter(filename, 0x7634706d, fps, (width, height))
     fps = int(fps)
-    print(frame_nums)
     for frame_idx in range(frame_nums):
         ret, frame = video.read()
         if not ret:
@@ -32,7 +30,6 @@ def readVideo(filename='movie/output.mp4'):
             break
         frame = cv2.flip(frame, 1)
         audio_frame, val = player.get_frame()
-        # writer.write_frame(audio_frame ,1)
         out.write(frame)
         cv2.imshow('frame', frame)
         cv2.waitKey(1000//fps)
