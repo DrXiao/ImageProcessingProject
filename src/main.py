@@ -14,7 +14,7 @@ Output:
 """
 
 
-def readViedo(func, filename='movie/output.mp4'):
+def readVideo(filename='movie/output.mp4'):
     video = cv2.VideoCapture(video_path)
     player = MediaPlayer(video_path)
     fps = int(video.get(cv2.CAP_PROP_FPS))
@@ -27,7 +27,7 @@ def readViedo(func, filename='movie/output.mp4'):
         if not ret:
             print("Can't not receive frame")
             break
-        frame = func(frame)
+        frame = cv2.flip(frame, 1)
         audio_frame, val = player.get_frame()
         out.write(frame)
         cv2.imshow('frame', frame)
@@ -42,7 +42,7 @@ def function(frame, filp_num=1):
 
 
 def main():
-    readViedo(function)
+    readVideo(function)
 
 
 main()
