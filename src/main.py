@@ -1,6 +1,6 @@
 import cv2
 from ffpyplayer.player import MediaPlayer
-video_path = 'movie/seal.avi'
+video_path = 'movie/seal.mp4'
 
 """
 Utility : 
@@ -16,10 +16,8 @@ def readViedo():
     player = MediaPlayer(video_path)
     fps = int(video.get(cv2.CAP_PROP_FPS))
     frame_nums = int(video.get(cv2.CAP_PROP_FRAME_COUNT))
-    fourcc = cv2.VideoWriter_fourcc(*'XVID')
-    print('%x'%(fourcc))
     width, height = int(video.get(cv2.CAP_PROP_FRAME_WIDTH)), int(video.get(cv2.CAP_PROP_FRAME_HEIGHT))
-    out = cv2.VideoWriter('movie/output.avi',  fourcc, fps, (width, height))
+    out = cv2.VideoWriter('movie/output.mp4', 0x7634706d, fps, (width, height))
     for frame_idx in range(frame_nums):
         ret, frame = video.read()
         if not ret:
