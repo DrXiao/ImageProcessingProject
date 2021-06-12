@@ -1,6 +1,6 @@
 from effect import *
 
 def main():
-    readVideo()
+    readVideo_fake_hidden('movie/effect1.mp4')
 
 main()
