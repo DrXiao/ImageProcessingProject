@@ -2,6 +2,8 @@ from effect import *
 from effect_DrXiao import *
 from effect_quokka import *
 from effect_teazer import *
+from effect_addg import *
+from effect_addg_edge import *
 
 def main():
     # readVideo_fake_hidden('movie/effect_DrXiao.mp4')
