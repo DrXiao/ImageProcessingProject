@@ -76,6 +76,7 @@ def readVideo_RGB(filename = 'movie/output_quokka.mp4'):
         else:
             flag = True
         frame,lastbinary = changeRGB(frame,lastbinary,flag)
+        # frame = cv2.flip(frame, 1)
         #audio_frame, val = player.get_frame()
         out.write(frame)
     video.release()

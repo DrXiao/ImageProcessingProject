@@ -1,6 +1,5 @@
 import numpy as np
 import cv2
-import imutils
 import time
 from ffpyplayer.player import MediaPlayer
 from PIL import Image
@@ -51,7 +50,7 @@ Output:
 """
 
 
-def readViedo():
+def readVideo_T0(filename = 'movie/effect_T0.mp4'):
 
     video = cv2.VideoCapture(video_path)
     # player = MediaPlayer(video_path)
@@ -59,28 +58,20 @@ def readViedo():
     frame_nums = int(video.get(cv2.CAP_PROP_FRAME_COUNT))
     width, height = int(video.get(cv2.CAP_PROP_FRAME_WIDTH)), int(
         video.get(cv2.CAP_PROP_FRAME_HEIGHT))
-    out = cv2.VideoWriter('movie/output1.mp4',
+    out = cv2.VideoWriter(filename,
                           0x7634706d, fps, (width, height))
-    ret, frame = video.read()
     for frame_idx in range(frame_nums):
         ret, frame = video.read()
         orgimg = frame
         if not ret:
             print("Can't not receive frame")
             break
-        frame = cv2.flip(frame, 1)  # 圖片翻轉
+        # frame = cv2.flip(frame, 1)  # 圖片翻轉
         frame = img_process(frame, frame)
         out.write(frame)
         # audio_frame, val = player.get_frame()
-        cv2.imshow('frame', frame)
+        # cv2.imshow('frame', frame)
         cv2.waitKey(1000//fps)
     video.release()
     out.release()
     cv2.destroyAllWindows()
-
-
-def main():
-    readViedo()
-
-
-main()
