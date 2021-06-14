@@ -33,14 +33,16 @@ def readVideo_remove_point(filename='movie/output.mp4'):
             break
         #frame = img.copy()
         img = []
-        dst,labels,mask,frame = remove_point(frame, 0.4, 60, 1500)
-        dst,labels,mask,frame = remove_point(frame, 0.4, 40, 5000)
-        dst,labels,mask,frame = remove_point(frame, 1, 40, 4000)
+        dst,mask,frame = remove_point(frame, 0.4, 60, 1500) 
+                    # 參數：frame, gamma, threshold, maxarea
+        dst,mask,frame = remove_point(frame, 0.4, 40, 5000)
+        dst,mask,frame = remove_point(frame, 1, 40, 4000)
         
         # audio_frame, val = player.get_frame()
         out.write(frame)
         # cv2.imshow('frame', frame)
         cv2.waitKey(1000//fps)
+    
     video.release()
     # out.release()
     cv2.destroyAllWindows()
@@ -61,14 +63,15 @@ def remove_point(frame, gamma, thres, maxarea):
     y_gray = cv2.convertScaleAbs(y_gray)
     dst = cv2.add(x_gray,y_gray,dtype=cv2.CV_16S)
     dst = cv2.convertScaleAbs(dst)
-    # thres = 40
+    # thres = 40  # threshold 臨界值
     dst[dst>thres]=255
     dst[dst<=thres]=0
 
     # 出事了阿伯
     # 閉運算把點先連起來
     labels = ((morphology.closing(dst, skimage.morphology.disk(3))>0)*255).astype(np.uint8)
-    labels_out = labels
+
+    # 利用連通域來排除不是斑點的區域
     num_labels,labels,stats,centers = cv2.connectedComponentsWithStats(labels, connectivity=4,ltype=cv2.CV_32S)
     for t in range(1, num_labels, 1):
         x, y, w, h, area = stats[t]
@@ -79,9 +82,10 @@ def remove_point(frame, gamma, thres, maxarea):
     mask = (labels>0).astype(np.uint8)*255
 
     mask = remove_holes_in_region(mask)
+    # 圖像修復，修復斑點的區域，就可以除掉斑點
     frame = cv2.inpaint(frame,mask,10,cv2.INPAINT_TELEA)
 
-    return dst, labels_out, mask, frame
+    return dst, mask, frame
 
 # 把圈圈中間的空洞補齊
 def remove_holes_in_region(mask_scar):
