@@ -34,20 +34,20 @@ def readVideo_edgeDetection(filename='movie/output_edgeDetection.mp4'):
         #frame = img.copy()
         frame = edgeDetection(frame)
         # audio_frame, val = player.get_frame()
-        out.write(frame)
-        cv2.imshow('frame', frame)
+        out.write(np.uint8(frame))
+        #cv2.imshow('frame', frame)
         cv2.waitKey(1000//fps)
     video.release()
     out.release()
     cv2.destroyAllWindows()
 
 def edgeDetection(frame):
-    src = cv2.cvtColor(frame,cv2.COLOR_BGR2GRAY)
+    src = frame # cv2.cvtColor(frame,cv2.COLOR_BGR2GRAY)
     x_gray = cv2.Sobel(src,cv2.CV_64F,1,0)
     y_gray = cv2.Sobel(src,cv2.CV_64F,0,1)
     x_gray = cv2.convertScaleAbs(x_gray)
     y_gray = cv2.convertScaleAbs(y_gray)
-    dst = cv2.add(x_gray,y_gray,dtype=cv2.CV_16S)
+    dst = cv2.add(x_gray,y_gray,dtype=cv2.CV_8U)
     dst = cv2.convertScaleAbs(dst)
 
     return dst

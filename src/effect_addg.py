@@ -27,7 +27,6 @@ def readVideo_remove_point(filename='movie/output.mp4'):
     fps = int(fps)
 
     for frame_idx in range(frame_nums):
-        if frame_idx == 20: break
         ret, frame = video.read()
         if not ret:
             print("Can't not receive frame")
@@ -38,7 +37,7 @@ def readVideo_remove_point(filename='movie/output.mp4'):
         dst,labels,mask,frame = remove_point(frame, 1, 40, 4000)
         # audio_frame, val = player.get_frame()
         out.write(frame)
-        cv2.imshow('frame', frame)
+        # cv2.imshow('frame', frame)
         cv2.waitKey(1000//fps)
     video.release()
     out.release()

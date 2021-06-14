@@ -3,6 +3,7 @@ import cv2
 import time
 from ffpyplayer.player import MediaPlayer
 from PIL import Image
+from matplotlib import pyplot
 video_path = 'movie/seal.mp4'
 
 ##
@@ -12,7 +13,7 @@ video_path = 'movie/seal.mp4'
 
 def preprocess(img):
     img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)  # 灰階
-    ret, img = cv2.threshold(img, 180, 255, cv2.THRESH_BINARY)  # 門檻
+    ret, img = cv2.threshold(img, 170, 255, cv2.THRESH_BINARY)  # 門檻
     return img
 
 
@@ -25,14 +26,15 @@ fgbg_gmg = cv2.bgsegm.createBackgroundSubtractorGMG()
 kernel = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (3, 3))
 
 
-def img_process(orgimg, img):
+def img_process(img):
 
     global lastFrame
     frame_preprocess = preprocess(img)
     if(lastFrame is None):
         lastFrame = frame_preprocess
-    fgmask_diff = cv2.absdiff(frame_preprocess, lastFrame)
+    fgmask_diff = np.uint8(cv2.absdiff(frame_preprocess, lastFrame))
     lastFrame = frame_preprocess
+    fgmask_diff = cv2.cvtColor(fgmask_diff, cv2.COLOR_GRAY2BGR)
 
     # fgmask_mog = fgbg_mog.apply(frame_preprocess)
     # fgmask_mog2 = fgbg_mog2.apply(frame_preprocess)
@@ -63,18 +65,15 @@ def readVideo_T0(filename='movie/output.mp4'):
         video.get(cv2.CAP_PROP_FRAME_HEIGHT))
     out = cv2.VideoWriter(filename,
                           0x7634706d, fps, (width, height))
-    ret, frame = video.read()
     for frame_idx in range(frame_nums):
         ret, frame = video.read()
-        orgimg = frame
         if not ret:
             print("Can't not receive frame")
             break
-        frame = cv2.flip(frame, 1)  # 圖片翻轉
-        frame = img_process(frame, frame)
-        out.write(np.uint8(frame))
+        frame = np.uint8(img_process(frame))
         # audio_frame, val = player.get_frame()
         # cv2.imshow('frame', frame)
+        out.write(frame)
         cv2.waitKey(1000//fps)
     video.release()
     out.release()
