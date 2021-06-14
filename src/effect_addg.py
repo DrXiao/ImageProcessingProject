@@ -32,15 +32,17 @@ def readVideo_remove_point(filename='movie/output.mp4'):
             print("Can't not receive frame")
             break
         #frame = img.copy()
+        img = []
         dst,labels,mask,frame = remove_point(frame, 0.4, 60, 1500)
         dst,labels,mask,frame = remove_point(frame, 0.4, 40, 5000)
         dst,labels,mask,frame = remove_point(frame, 1, 40, 4000)
+        
         # audio_frame, val = player.get_frame()
         out.write(frame)
         # cv2.imshow('frame', frame)
         cv2.waitKey(1000//fps)
     video.release()
-    out.release()
+    # out.release()
     cv2.destroyAllWindows()
 
 def remove_point(frame, gamma, thres, maxarea):

@@ -59,6 +59,8 @@ def readVideo_fake_hidden(filename='movie/output.mp4'):
     fps = int(fps)
     for frame_idx in range(frame_nums):
         ret, frame = video.read()
+        if (frame_idx == 0):
+            basicfunc(frame)
         if not ret:
             print("Can't not receive frame")
             break
